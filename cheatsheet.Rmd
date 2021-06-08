@@ -1,0 +1,105 @@
+---
+title: "torch cheatsheet"
+output: 
+  flexdashboard::flex_dashboard:
+    theme:
+      version: 4
+      bg: "white"
+      fg: "black" 
+      primary: "#ED79F9"
+      base_font:
+        google: Prompt
+      code_font:
+        google: JetBrains Mono
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+# Install thematic and un-comment for themed static plots (i.e., ggplot2)
+# thematic::thematic_rmd()
+```
+
+Column {data-width=250}
+-----------------------------------------------------------------------
+
+### Torch for R {data-height=500}
+
+<div class="text-center">
+```{r out.width="30%"}
+knitr::include_graphics("https://torch.mlverse.org/css/images/hex/torch.png")
+```
+</div>
+
+torch is a machine learning framework that helps accelerates the path from research prototyping to production deployment.
+
+It is part of an ecosystem of packages to interface with specific dataset like 
+torchaudio for audio-like and torchvision for image-like data.
+
+### Installation
+
+The torch R package uses the C++ libtorch library.  You can install the prerequisites directly from R.
+
+```{r echo=TRUE, eval = FALSE}
+install.packages("torch")
+library(torch)
+install_torch()
+```
+
+See `?install_torch` for GPU installation instructions.
+See also the installation [page](https://torch.mlverse.org/docs/articles/installation.html).
+
+### Components in torch {data-height=200}
+
+torch has a modular API including the following compoenents:
+
+- nn_modules
+- datasets and dataloaders
+
+Column {data-width=250}
+-----------------------------------------------------------------------
+
+### Chart C
+
+```{r}
+
+```
+
+### Chart D
+
+```{r}
+
+```
+
+Column {data-width=250}
+-----------------------------------------------------------------------
+
+### Chart C
+
+```{r}
+
+```
+
+### Chart D
+
+```{r}
+
+```
+
+
+Column {data-width=250}
+-----------------------------------------------------------------------
+
+
+### Chart C
+
+```{r}
+
+```
+
+### Chart D
+
+```{r}
+
+```
