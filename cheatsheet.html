@@ -1935,16 +1935,57 @@ window.FlexDashboardComponents.push({
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install_torch</span>()</span></code></pre></div>
 <p>See <code>?install_torch</code> for GPU installation instructions. See also the installation <a href="https://torch.mlverse.org/docs/articles/installation.html">page</a>.</p>
 </div>
-<div id="components-in-torch" class="section level3" data-height="200">
-<h3 data-height="200">Components in torch</h3>
-<p>torch has a modular API including the following compoenents:</p>
+<div id="components-in-torch" class="section level3" data-height="300">
+<h3 data-height="300">Components in torch</h3>
+<p>torch has a modular API including the following components:</p>
 <ul>
-<li>nn_modules</li>
-<li>datasets and dataloaders</li>
+<li><strong>nn_modules</strong>: to manage state of models and layers.</li>
+<li><strong>datasets and dataloaders</strong>: to manage fast and efficient data loading.</li>
+<li><strong>optimizers</strong>: to encapsulate optimization algorithms in a single function call.</li>
 </ul>
 </div>
 </div>
 <div id="column-1" class="section level2" data-width="250">
+<h2 data-width="250">Column</h2>
+<div id="defining-a-new-nn_module" class="section level3" data-height="500">
+<h3 data-height="500">Defining a new <code>nn_module</code></h3>
+<p><code>nn_module</code>s are defined by passing an <code>initialize()</code> and a <code>forward()</code> method to the <code>nn_module()</code> function.</p>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Linear <span class="ot">&lt;-</span> <span class="fu">nn_module</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes the model parameters and stores </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># them in `self`</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">initialize =</span> <span class="cf">function</span>(input_shape) {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    self<span class="sc">$</span>w <span class="ot">&lt;-</span> <span class="fu">nn_parameter</span>(<span class="fu">torch_randn</span>(input_shape, <span class="dv">1</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    self<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">nn_parameter</span>(<span class="fu">torch_zeros</span>(<span class="dv">1</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Does the computation with input and parameters.</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">forward =</span> <span class="cf">function</span>(input) {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">torch_mm</span>(input, self<span class="sc">$</span>w) <span class="sc">+</span> self<span class="sc">$</span>b</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="using-nn_modules" class="section level3" data-height="400">
+<h3 data-height="400">Using <code>nn_module</code>s</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calls the `initialize` function and returns a model</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># object.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>linear <span class="ot">&lt;-</span> <span class="fu">Linear</span>(<span class="at">input_shape =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calls the `forward` function using the initialized</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">linear</span>(<span class="fu">torch_randn</span>(<span class="dv">1</span>, <span class="dv">10</span>))</span></code></pre></div>
+<pre><code>torch_tensor
+-0.8263
+[ CPUFloatType{1,1} ]</code></pre>
+</div>
+</div>
+<div id="column-2" class="section level2" data-width="250">
 <h2 data-width="250">Column</h2>
 <div id="chart-c" class="section level3">
 <h3>Chart C</h3>
@@ -1959,7 +2000,7 @@ window.FlexDashboardComponents.push({
 </div>
 </div>
 </div>
-<div id="column-2" class="section level2" data-width="250">
+<div id="column-3" class="section level2" data-width="250">
 <h2 data-width="250">Column</h2>
 <div id="chart-c-1" class="section level3">
 <h3>Chart C</h3>
@@ -1968,21 +2009,6 @@ window.FlexDashboardComponents.push({
 </div>
 </div>
 <div id="chart-d-1" class="section level3">
-<h3>Chart D</h3>
-<div class="knitr-options" data-fig-width="576" data-fig-height="460">
-
-</div>
-</div>
-</div>
-<div id="column-3" class="section level2" data-width="250">
-<h2 data-width="250">Column</h2>
-<div id="chart-c-2" class="section level3">
-<h3>Chart C</h3>
-<div class="knitr-options" data-fig-width="576" data-fig-height="460">
-
-</div>
-</div>
-<div id="chart-d-2" class="section level3">
 <h3>Chart D</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 

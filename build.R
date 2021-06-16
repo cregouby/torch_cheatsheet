@@ -8,6 +8,7 @@ b$Browser$setWindowBounds(
 )
 
 b$Page$navigate(paste0("file://",f))
+Sys.sleep(2)
 tmp <- file.path(tempdir(), "torch.png")
 b$screenshot(tmp)
 

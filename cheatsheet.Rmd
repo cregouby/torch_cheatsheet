@@ -17,6 +17,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(torch)
 # Install thematic and un-comment for themed static plots (i.e., ggplot2)
 # thematic::thematic_rmd()
 ```
@@ -50,26 +51,49 @@ install_torch()
 See `?install_torch` for GPU installation instructions.
 See also the installation [page](https://torch.mlverse.org/docs/articles/installation.html).
 
-### Components in torch {data-height=200}
+### Components in torch {data-height=300}
 
-torch has a modular API including the following compoenents:
+torch has a modular API including the following components:
 
-- nn_modules
-- datasets and dataloaders
+- **nn_modules**: to manage state of models and layers.
+- **datasets and dataloaders**: to manage fast and efficient data loading.
+- **optimizers**: to encapsulate optimization algorithms in a single function call.
 
 Column {data-width=250}
 -----------------------------------------------------------------------
 
-### Chart C
+### Defining a new `nn_module` {data-height=500}
 
-```{r}
+`nn_module`s are defined by passing an `initialize()` and a `forward()` method to 
+the `nn_module()` function.
 
+```{r, echo = TRUE}
+Linear <- nn_module(
+  # Initializes the model parameters and stores 
+  # them in `self`
+  initialize = function(input_shape) {
+    self$w <- nn_parameter(torch_randn(input_shape, 1))
+    self$b <- nn_parameter(torch_zeros(1))
+  },
+  # Does the computation with input and parameters.
+  forward = function(input) {
+    torch_mm(input, self$w) + self$b
+  }
+)
 ```
 
-### Chart D
+### Using `nn_module`s {data-height=400}
 
-```{r}
+```{r, echo=TRUE}
+# Calls the `initialize` function and returns a model
+# object.
+linear <- Linear(input_shape = 10)
+```
 
+```{r, echo = TRUE}
+# Calls the `forward` function using the initialized
+# parameters.
+linear(torch_randn(1, 10))
 ```
 
 Column {data-width=250}
